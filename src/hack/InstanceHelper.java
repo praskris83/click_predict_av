@@ -176,7 +176,7 @@ public class InstanceHelper {
 			// values.setValue(15, "");
 			// values.setValue(16, "");
 			data.add(values);
-			break;
+//			break;
 		}
 	}
 
