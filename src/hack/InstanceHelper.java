@@ -61,9 +61,9 @@ public class InstanceHelper {
 
 		try {
 			// 203.88.6.38
-			for (int i = 480; i <= 622; i++) {
-//				 String filename =
-//				 "E:\\Prasad\\hackathon\\Click_Predictions\\train\\train-";
+			for (int i = 622; i <= 622; i++) {
+				// String filename =
+				// "E:\\Prasad\\hackathon\\Click_Predictions\\train\\train-";
 				String filename = "/tmp/train/train-";
 				if (("" + i).length() == 1) {
 					filename = filename + "00" + i + ".csv";
@@ -130,53 +130,60 @@ public class InstanceHelper {
 			throws IOException, ParseException {
 		String header = it.next();
 		while (it.hasNext()) {
-			String[] lineData = it.next().split(",");
-//			System.out.println(Arrays.asList(lineData));
 			Instance values = new DenseInstance(34);
-			values.setDataset(data);
-			values.setValue(0, (lineData[1].isEmpty() || !(allCountryCodes.contains(lineData[1])) ? "--"
-					: lineData[1].trim().toUpperCase()));
-			values.setValue(1, Helper.getNumberFromStr(lineData[2]));
-			values.setValue(2, (StringUtils.isNotBlank(lineData[3]) ? lineData[3].trim() : "G"));
-			// String clickDate = line[4];
-			// String clickTime = "UK";
-			// if(StringUtils.isBlank(clickDate)){
-			// clickDate="2099-01-01";
-			// }else{
-			// clickDate = clickDate.split(" ")
-			// }
-			double clkdate = data.attribute("ClickDate").parseDate(Helper.getDateStr1(lineData[4]));
-			// values.setValue(atts.get(3), "2006-08-03");
-			values.setValue(3, clkdate);
-			values.setValue(4, Helper.getTimeStr1(lineData[4]));
-			values.setValue(5, Helper.getHashFromStr(lineData[5]));
-			setDeviceAttrs(lineData[5], values);
-			values.setValue(6, Helper.getHashFromStr(lineData[6]));
-			setBrowserAttrs(lineData[6], values);
-			values.setValue(7, Helper.getHashFromStr(lineData[7]));
-			setOsAttrs(lineData[7], values);
-			values.setValue(8, Helper.getHashFromURL(lineData[8]));
-			long usrIPStr = Helper.getUsrIPStr(lineData[9]);
-			if (userVisitMap.containsKey(usrIPStr)) {
-				Long visitCount = userVisitMap.get(usrIPStr) + 1;
-				values.setValue(10, visitCount);
-				userVisitMap.put(usrIPStr, visitCount);
-			} else {
-				userVisitMap.put(usrIPStr, 1l);
-				values.setValue(10, 1l);
+			try {
+				String[] lineData = it.next().split(",");
+				// System.out.println(Arrays.asList(lineData));
+				values.setDataset(data);
+				values.setValue(0, (lineData[1].isEmpty() || !(allCountryCodes.contains(lineData[1])) ? "--"
+						: lineData[1].trim().toUpperCase()));
+				values.setValue(1, Helper.getNumberFromStr(lineData[2]));
+				values.setValue(2, (StringUtils.isNotBlank(lineData[3]) ? lineData[3].trim() : "G"));
+				// String clickDate = line[4];
+				// String clickTime = "UK";
+				// if(StringUtils.isBlank(clickDate)){
+				// clickDate="2099-01-01";
+				// }else{
+				// clickDate = clickDate.split(" ")
+				// }
+				double clkdate = data.attribute("ClickDate").parseDate(Helper.getDateStr1(lineData[4]));
+				// values.setValue(atts.get(3), "2006-08-03");
+				values.setValue(3, clkdate);
+				values.setValue(4, Helper.getTimeStr1(lineData[4]));
+				values.setValue(5, Helper.getHashFromStr(lineData[5]));
+				setDeviceAttrs(lineData[5], values);
+				values.setValue(6, Helper.getHashFromStr(lineData[6]));
+				setBrowserAttrs(lineData[6], values);
+				values.setValue(7, Helper.getHashFromStr(lineData[7]));
+				setOsAttrs(lineData[7], values);
+				values.setValue(8, Helper.getHashFromURL(lineData[8]));
+				long usrIPStr = Helper.getUsrIPStr(lineData[9]);
+				if (userVisitMap.containsKey(usrIPStr)) {
+					Long visitCount = userVisitMap.get(usrIPStr) + 1;
+					values.setValue(10, visitCount);
+					userVisitMap.put(usrIPStr, visitCount);
+				} else {
+					userVisitMap.put(usrIPStr, 1l);
+					values.setValue(10, 1l);
+				}
+				values.setValue(9, usrIPStr);
+				values.setValue(11, Helper.getNumberFromStr(lineData[13]));
+				values.setValue(12, Helper.getNumberFromStr(lineData[14]));
+				values.setValue(13, Helper.getNumberFromStr(lineData[15]));
+				values.setValue(14, Double.valueOf(lineData[16]));
+				values.setValue(15, lineData[10].toUpperCase().trim());
+				// values.setValue(15, "TRUE");
+				// values.setDataset(data);
+				// values.setValue(15, "");
+				// values.setValue(16, "");
+				data.add(values);
+				// break;
+			} catch (Exception e) {
+				e.printStackTrace();
+				values.setValue(15, "FALSE");
+				data.add(values);
+				continue;
 			}
-			values.setValue(9, usrIPStr);
-			values.setValue(11, Helper.getNumberFromStr(lineData[13]));
-			values.setValue(12, Helper.getNumberFromStr(lineData[14]));
-			values.setValue(13, Helper.getNumberFromStr(lineData[15]));
-			values.setValue(14, Double.valueOf(lineData[16]));
-			values.setValue(15, lineData[10].toUpperCase().trim());
-			// values.setValue(15, "TRUE");
-			// values.setDataset(data);
-			// values.setValue(15, "");
-			// values.setValue(16, "");
-			data.add(values);
-//			break;
 		}
 	}
 
@@ -333,9 +340,9 @@ public class InstanceHelper {
 		data.setClassIndex(15);
 
 		try {
-			for (int i = 623; i <= 633; i++) {
-//				 String filename =
-//				 "E:\\Prasad\\hackathon\\Click_Predictions\\train\\train-";
+			for (int i = 633; i <= 633; i++) {
+				// String filename =
+				// "E:\\Prasad\\hackathon\\Click_Predictions\\train\\train-";
 				String filename = "/tmp/train/train-";
 				if (("" + i).length() == 1) {
 					filename = filename + "00" + i + ".csv";
