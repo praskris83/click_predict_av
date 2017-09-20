@@ -91,8 +91,8 @@ public class InstanceHelper {
         /*
          * We are done training the classifier, so now we serialize it to disk
          */
-        SerializationHelper.write("click_predict4.model", cModel);
-        System.out.println("Saved trained model to click_predict3.model");
+        SerializationHelper.write("click_predict6.model", cModel);
+        System.out.println("Saved trained model to click_predict6.model");
 
         Instances testData = buildTestData();
         // Test the model
@@ -170,7 +170,7 @@ public class InstanceHelper {
       // values.setValue(15, "");
       // values.setValue(16, "");
       data.add(values);
-      break;
+//      break;
     }
   }
 
