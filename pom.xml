@@ -52,5 +52,5 @@
 		</dependency>
 
 	</dependencies>
-
+<!-- nohup mvn clean install exec:exec -->
 </project>

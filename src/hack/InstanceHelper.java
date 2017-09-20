@@ -81,7 +81,7 @@ public class InstanceHelper {
         }
         // StringToWordVector filter = new StringToWordVector();
       }
-      System.out.println(data);
+//      System.out.println(data);
       // Create a naïve bayes classifier
 
       Classifier cModel = (Classifier) new Logistic();
@@ -125,7 +125,7 @@ public class InstanceHelper {
     String[] line;
     line = reader.readNext();
     while ((line = reader.readNext()) != null) {
-      System.out.println(Arrays.asList(line));
+//      System.out.println(Arrays.asList(line));
       Instance values = new DenseInstance(34);
       values.setDataset(data);
       values.setValue(0, (line[1].isEmpty() || !(allCountryCodes.contains(line[1])) ? "--"
@@ -364,7 +364,7 @@ public class InstanceHelper {
     String[] line;
     line = reader.readNext();
     while ((line = reader.readNext()) != null) {
-      // System.out.println(Arrays.asList(line));
+//       System.out.println(Arrays.asList(line));
       Instance values = new DenseInstance(34);
       values.setDataset(data);
       values.setValue(0, (line[1].isEmpty() || !(allCountryCodes.contains(line[1])) ? "--"
