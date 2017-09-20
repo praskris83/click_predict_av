@@ -59,7 +59,7 @@ public class InstanceHelper {
 
     try {
       // 203.88.6.38
-      for (int i = 0; i <= 500; i++) {
+      for (int i = 232; i <= 532; i++) {
 //        String filename = "E:\\Prasad\\hackathon\\Click_Predictions\\train\\train-";
     	  String filename = "/tmp/train/train-";
         if (("" + i).length() == 1) {
@@ -329,7 +329,7 @@ public class InstanceHelper {
     data.setClassIndex(15);
 
     try {
-      for (int i = 501; i <= 633; i++) {
+      for (int i = 533; i <= 633; i++) {
 //        String filename = "E:\\Prasad\\hackathon\\Click_Predictions\\train\\train-";
     	  String filename = "/tmp/train/train-";
         if (("" + i).length() == 1) {
