@@ -1,6 +1,5 @@
 package hack;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -9,14 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.LineIterator;
 import org.apache.commons.lang3.StringUtils;
 
 import com.opencsv.CSVReader;
 
 import weka.classifiers.Classifier;
-import weka.classifiers.Evaluation;
 import weka.classifiers.functions.Logistic;
 import weka.core.Attribute;
 import weka.core.DenseInstance;
@@ -30,6 +26,7 @@ import weka.core.SerializationHelper;
  */
 public class InstanceHelper {
 
+	public static final String country = "**";
 	static Map<Long, Long> userVisitMap = new HashMap<Long, Long>();
 
 	public static void main(String[] args) {
@@ -61,17 +58,17 @@ public class InstanceHelper {
 
 		try {
 			// 203.88.6.38
-			for (int i = 500; i <= 622; i++) {
-//				 String filename =
-//				 "E:\\Prasad\\hackathon\\Click_Predictions\\train\\train-";
-				String filename = "/tmp/cltrain/train-";
-				if (("" + i).length() == 1) {
-					filename = filename + "00" + i + ".csv";
-				} else if (("" + i).length() == 2) {
-					filename = filename + "0" + i + ".csv";
-				} else {
-					filename = filename + i + ".csv";
-				}
+//			for (int i = 200; i <= 633; i++) {
+				 String filename =
+				 "E:\\Prasad\\hackathon\\Click_Predictions\\train\\train.csv";
+//				String filename = "/tmp/cltrain/train-";
+//				if (("" + i).length() == 1) {
+//					filename = filename + "00" + i + ".csv";
+//				} else if (("" + i).length() == 2) {
+//					filename = filename + "0" + i + ".csv";
+//				} else {
+//					filename = filename + i + ".csv";
+//				}
 				System.out.println("Train File --" + filename);
 //				LineIterator it = FileUtils.lineIterator(new File(filename), "UTF-8");
 				List<Data> datas = FileHelper.processInputFile(filename);
@@ -84,8 +81,8 @@ public class InstanceHelper {
 					e.printStackTrace();
 				} 
 				// StringToWordVector filter = new StringToWordVector();
-			}
-			// System.out.println(data);
+//			}
+			 System.out.println(data);
 			// Create a naïve bayes classifier
 
 			Classifier cModel = (Classifier) new Logistic();
@@ -96,24 +93,24 @@ public class InstanceHelper {
 				 * We are done training the classifier, so now we serialize it
 				 * to disk
 				 */
-				SerializationHelper.write("click_predict6.model", cModel);
+				SerializationHelper.write("click_predict.model" + country, cModel);
 				System.out.println("Saved trained model to click_predict6.model");
 
-				Instances testData = buildTestData();
-				// Test the model
-				Evaluation eTest = new Evaluation(testData);
-				eTest.evaluateModel(cModel, testData);
-
-				// Print the result à la Weka explorer:
-				String strSummary = eTest.toSummaryString();
-				System.out.println(strSummary);
-
-				// Get the confusion matrix
-				double[][] cmMatrix = eTest.confusionMatrix();
-
-				for (double[] row : cmMatrix) {
-					printRow(row);
-				}
+//				Instances testData = buildTestData();
+//				// Test the model
+//				Evaluation eTest = new Evaluation(testData);
+//				eTest.evaluateModel(cModel, testData);
+//
+//				// Print the result à la Weka explorer:
+//				String strSummary = eTest.toSummaryString();
+//				System.out.println(strSummary);
+//
+//				// Get the confusion matrix
+//				double[][] cmMatrix = eTest.confusionMatrix();
+//
+//				for (double[] row : cmMatrix) {
+//					printRow(row);
+//				}
 
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -136,7 +133,7 @@ public class InstanceHelper {
 				// System.out.println(Arrays.asList(lineData));
 				values.setDataset(data);
 				values.setValue(0, (line.cuntry.isEmpty() || !(allCountryCodes.contains(line.cuntry)) ? "--"
-						: line.cuntry.trim().toUpperCase()));
+						: line.cuntry.trim().toLowerCase()));
 				values.setValue(1, Helper.getNumberFromStr(line.carrier));
 				values.setValue(2, (StringUtils.isNotBlank(line.traffic) ? line.traffic : "G"));
 				// String clickDate = line[4];
@@ -171,13 +168,13 @@ public class InstanceHelper {
 				values.setValue(12, Helper.getNumberFromStr(line.sub));
 				values.setValue(13, Helper.getNumberFromStr(line.add));
 				values.setValue(14, Double.valueOf(line.frd));
-				values.setValue(15, line.conversion.toUpperCase().trim());
+				values.setValue(15, line.conversion.toLowerCase().trim());
 				// values.setValue(15, "TRUE");
 				// values.setDataset(data);
 				// values.setValue(15, "");
 				// values.setValue(16, "");
 				data.add(values);
-				// break;
+				break;
 			} catch (Exception e) {
 				e.printStackTrace();
 				values.setValue(15, "FALSE");
@@ -380,7 +377,7 @@ public class InstanceHelper {
 			Instance values = new DenseInstance(34);
 			values.setDataset(data);
 			values.setValue(0,
-					(line[1].isEmpty() || !(allCountryCodes.contains(line[1])) ? "--" : line[1].trim().toUpperCase()));
+					(line[1].isEmpty() || !(allCountryCodes.contains(line[1])) ? "--" : line[1].trim().toLowerCase()));
 			values.setValue(1, Helper.getNumberFromStr(line[2]));
 			values.setValue(2, (StringUtils.isNotBlank(line[3]) ? line[3].trim() : "G"));
 			// String clickDate = line[4];
@@ -415,7 +412,7 @@ public class InstanceHelper {
 			values.setValue(12, Helper.getNumberFromStr(line[14]));
 			values.setValue(13, Helper.getNumberFromStr(line[15]));
 			values.setValue(14, Double.valueOf(line[16]));
-			values.setValue(15, line[10].toUpperCase().trim());
+			values.setValue(15, line[10].toLowerCase().trim());
 			// values.setValue(15, "TRUE");
 			// values.setDataset(data);
 			// values.setValue(15, "");

@@ -9,13 +9,10 @@ import java.io.InputStreamReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-
-import weka.core.Instances;
 
 /**
  * @author prasad
@@ -50,7 +47,7 @@ public class FileHelper {
 			InputStream inputFS = new FileInputStream(inputF);
 			BufferedReader br = new BufferedReader(new InputStreamReader(inputFS));
 			// skip the header of the csv
-			inputList = br.lines().skip(1).filter(line->line.contains("IN,")).map(mapToItem).collect(Collectors.toList());
+			inputList = br.lines().skip(1).filter(line->line.contains(InstanceHelper.country+",")).map(mapToItem).collect(Collectors.toList());
 			br.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -60,29 +57,29 @@ public class FileHelper {
 
 	private static Function<String, Data> mapToItem = (line) -> {
 		String[] p = line.split(COMMA);// a CSV has comma separated lines
-		System.out.println(Arrays.asList(p));
+//		System.out.println(Arrays.asList(p));
 //		if(p.length > 17){
 //			System.out.println(line);
 //		}
 		Data item = new Data();
 		// more initialization goes here
-		item.id=p[0];
-		item.cuntry=p[1];
-		item.carrier=p[2];
-		item.traffic=p[3];
-		item.clickDate=p[4];
-		item.device=p[5];
-		item.browser=p[6];
-		item.os=p[7];
-		item.reffer=p[8];
-		item.ip=p[p.length-8];
-		item.conversion=p[p.length-7];
-		item.cDate=p[p.length-6];
-		item.pay=p[p.length-5];
-		item.pub=p[p.length-4];
-		item.sub=p[p.length-3];
-		item.add=p[p.length-2];
-		item.frd=p[p.length-1];
+		item.id=""+p[0].toLowerCase().trim();
+		item.cuntry=""+p[1].toLowerCase().trim();
+		item.carrier=""+p[2].toLowerCase().trim();
+		item.traffic=""+p[3].toLowerCase().trim();
+		item.clickDate=""+p[4].toLowerCase().trim();
+		item.device=""+p[5].toLowerCase().trim();
+		item.browser=""+p[6].toLowerCase().trim();
+		item.os=""+p[7].toLowerCase().trim();
+		item.reffer=""+p[8].toLowerCase().trim();
+		item.ip=""+p[p.length-8].toLowerCase().trim();
+		item.conversion=""+p[p.length-7].toLowerCase().trim();
+		item.cDate=""+p[p.length-6].toLowerCase().trim();
+		item.pay=""+p[p.length-5].toLowerCase().trim();
+		item.pub=""+p[p.length-4].toLowerCase().trim();
+		item.sub=""+p[p.length-3].toLowerCase().trim();
+		item.add=""+p[p.length-2].toLowerCase().trim();
+		item.frd=""+p[p.length-1].toLowerCase().trim();
 		
 		return item;
 	};

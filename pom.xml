@@ -24,8 +24,8 @@
 				<configuration>
 					<executable>java</executable>
 					<arguments>
-						<argument>-Xms18g</argument>
-						<argument>-Xmx18g</argument>
+						<argument>-Xms25g</argument>
+						<argument>-Xmx25g</argument>
 						<argument>-XX:NewRatio=1</argument>
 						<argument>-XX:+PrintGCTimeStamps</argument>
 						<argument>-XX:+UseParallelGC</argument>
