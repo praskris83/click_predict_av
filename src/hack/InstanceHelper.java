@@ -26,7 +26,7 @@ import weka.core.SerializationHelper;
  */
 public class InstanceHelper {
 
-	public static final String country = "**";
+	public static final String country = "IN";
 	static Map<Long, Long> userVisitMap = new HashMap<Long, Long>();
 
 	public static void main(String[] args) {
@@ -58,59 +58,61 @@ public class InstanceHelper {
 
 		try {
 			// 203.88.6.38
-//			for (int i = 200; i <= 633; i++) {
-				 String filename =
-				 "E:\\Prasad\\hackathon\\Click_Predictions\\train\\train.csv";
-//				String filename = "/tmp/cltrain/train-";
-//				if (("" + i).length() == 1) {
-//					filename = filename + "00" + i + ".csv";
-//				} else if (("" + i).length() == 2) {
-//					filename = filename + "0" + i + ".csv";
-//				} else {
-//					filename = filename + i + ".csv";
-//				}
-				System.out.println("Train File --" + filename);
-//				LineIterator it = FileUtils.lineIterator(new File(filename), "UTF-8");
-				List<Data> datas = FileHelper.processInputFile(filename);
-				// CSVReader reader = new CSVReader(new FileReader(filename));
-				// CSVReader reader = new CSVReader(new
-				// FileReader("train-628.csv"));
-				try {
-					buildTrainEntry(allCountryCodes, data, datas);
-				} catch (Exception e) {
-					e.printStackTrace();
-				} 
-				// StringToWordVector filter = new StringToWordVector();
-//			}
-			 System.out.println(data);
+			// for (int i = 200; i <= 633; i++) {
+			// String filename =
+			// "E:\\Prasad\\hackathon\\Click_Predictions\\train\\train.csv";
+			String filename = "/tmp/cltrain/train.csv";
+			// if (("" + i).length() == 1) {
+			// filename = filename + "00" + i + ".csv";
+			// } else if (("" + i).length() == 2) {
+			// filename = filename + "0" + i + ".csv";
+			// } else {
+			// filename = filename + i + ".csv";
+			// }
+			System.out.println("Train File --" + filename);
+			// LineIterator it = FileUtils.lineIterator(new File(filename),
+			// "UTF-8");
+			List<Data> datas = FileHelper.processInputFile(filename);
+			// CSVReader reader = new CSVReader(new FileReader(filename));
+			// CSVReader reader = new CSVReader(new
+			// FileReader("train-628.csv"));
+			try {
+				buildTrainEntry(allCountryCodes, data, datas);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			// StringToWordVector filter = new StringToWordVector();
+			// }
+			// System.out.println(data);
 			// Create a naïve bayes classifier
 
 			Classifier cModel = (Classifier) new Logistic();
 			try {
+				System.out.println("Starting trained model to click_predict_" + country + ".model");
 				cModel.buildClassifier(data);
 
 				/*
 				 * We are done training the classifier, so now we serialize it
 				 * to disk
 				 */
-				SerializationHelper.write("click_predict.model" + country, cModel);
-				System.out.println("Saved trained model to click_predict6.model");
+				SerializationHelper.write("click_predict_" + country + ".model", cModel);
+				System.out.println("Saved trained model to click_predict_" + country + ".model");
 
-//				Instances testData = buildTestData();
-//				// Test the model
-//				Evaluation eTest = new Evaluation(testData);
-//				eTest.evaluateModel(cModel, testData);
-//
-//				// Print the result à la Weka explorer:
-//				String strSummary = eTest.toSummaryString();
-//				System.out.println(strSummary);
-//
-//				// Get the confusion matrix
-//				double[][] cmMatrix = eTest.confusionMatrix();
-//
-//				for (double[] row : cmMatrix) {
-//					printRow(row);
-//				}
+				// Instances testData = buildTestData();
+				// // Test the model
+				// Evaluation eTest = new Evaluation(testData);
+				// eTest.evaluateModel(cModel, testData);
+				//
+				// // Print the result à la Weka explorer:
+				// String strSummary = eTest.toSummaryString();
+				// System.out.println(strSummary);
+				//
+				// // Get the confusion matrix
+				// double[][] cmMatrix = eTest.confusionMatrix();
+				//
+				// for (double[] row : cmMatrix) {
+				// printRow(row);
+				// }
 
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -124,18 +126,18 @@ public class InstanceHelper {
 
 	protected static void buildTrainEntry(List<String> allCountryCodes, Instances data, List<Data> datas)
 			throws IOException, ParseException {
-//		String header = datas.next();
-//		while (datas.hasNext()) {
-		for(Data line: datas){
+		// String header = datas.next();
+		// while (datas.hasNext()) {
+		for (Data line : datas) {
 			Instance values = new DenseInstance(34);
 			try {
-//				String[] lineData = datas.next().split(",");
+				// String[] lineData = datas.next().split(",");
 				// System.out.println(Arrays.asList(lineData));
 				values.setDataset(data);
 				values.setValue(0, (line.cuntry.isEmpty() || !(allCountryCodes.contains(line.cuntry)) ? "--"
 						: line.cuntry.trim().toLowerCase()));
 				values.setValue(1, Helper.getNumberFromStr(line.carrier));
-				values.setValue(2, (StringUtils.isNotBlank(line.traffic) ? line.traffic : "G"));
+				values.setValue(2, (StringUtils.isNotBlank(line.traffic) ? line.traffic : "g"));
 				// String clickDate = line[4];
 				// String clickTime = "UK";
 				// if(StringUtils.isBlank(clickDate)){
@@ -174,7 +176,7 @@ public class InstanceHelper {
 				// values.setValue(15, "");
 				// values.setValue(16, "");
 				data.add(values);
-				break;
+//				break;
 			} catch (Exception e) {
 				e.printStackTrace();
 				values.setValue(15, "FALSE");
@@ -296,7 +298,7 @@ public class InstanceHelper {
 
 		atts.add(new Attribute("Carrier", false));
 
-		atts.add(new Attribute("TrafficType", Arrays.asList(new String[] { "M", "A", "G" })));
+		atts.add(new Attribute("TrafficType", Arrays.asList(new String[] { "m", "a", "g" })));
 
 		atts.add(new Attribute("ClickDate", "yyyy-mm-dd"));
 
@@ -322,7 +324,7 @@ public class InstanceHelper {
 
 		atts.add(new Attribute("Fraud", false));
 
-		atts.add(new Attribute("Conversion", Arrays.asList(new String[] { "FALSE", "TRUE" })));
+		atts.add(new Attribute("Conversion", Arrays.asList(new String[] { "false", "true" })));
 	}
 
 	public static Instances buildTestData() {
@@ -338,8 +340,8 @@ public class InstanceHelper {
 
 		try {
 			for (int i = 623; i <= 633; i++) {
-//				 String filename =
-//				 "E:\\Prasad\\hackathon\\Click_Predictions\\train\\train-";
+				// String filename =
+				// "E:\\Prasad\\hackathon\\Click_Predictions\\train\\train-";
 				String filename = "/tmp/cltrain/train-";
 				if (("" + i).length() == 1) {
 					filename = filename + "00" + i + ".csv";
@@ -350,7 +352,8 @@ public class InstanceHelper {
 				}
 				System.out.println("Eval Files " + filename);
 				// CSVReader reader = new CSVReader(new FileReader(filename));
-//				LineIterator reader = FileUtils.lineIterator(new File(filename), "UTF-8");
+				// LineIterator reader = FileUtils.lineIterator(new
+				// File(filename), "UTF-8");
 				List<Data> reader = FileHelper.processInputFile(filename);
 				// 203.88.6.38
 				try {
