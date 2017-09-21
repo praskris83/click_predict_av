@@ -64,7 +64,7 @@ public class InstanceHelper {
 			for (int i = 500; i <= 622; i++) {
 //				 String filename =
 //				 "E:\\Prasad\\hackathon\\Click_Predictions\\train\\train-";
-				String filename = "/tmp/train/cltrain-";
+				String filename = "/tmp/cltrain/train-";
 				if (("" + i).length() == 1) {
 					filename = filename + "00" + i + ".csv";
 				} else if (("" + i).length() == 2) {
@@ -343,7 +343,7 @@ public class InstanceHelper {
 			for (int i = 623; i <= 633; i++) {
 //				 String filename =
 //				 "E:\\Prasad\\hackathon\\Click_Predictions\\train\\train-";
-				String filename = "/tmp/train/cltrain-";
+				String filename = "/tmp/cltrain/train-";
 				if (("" + i).length() == 1) {
 					filename = filename + "00" + i + ".csv";
 				} else if (("" + i).length() == 2) {
