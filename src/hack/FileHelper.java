@@ -50,7 +50,7 @@ public class FileHelper {
 			InputStream inputFS = new FileInputStream(inputF);
 			BufferedReader br = new BufferedReader(new InputStreamReader(inputFS));
 			// skip the header of the csv
-			inputList = br.lines().skip(1).map(mapToItem).collect(Collectors.toList());
+			inputList = br.lines().skip(1).filter(line->line.contains("IN,")).map(mapToItem).collect(Collectors.toList());
 			br.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -60,7 +60,7 @@ public class FileHelper {
 
 	private static Function<String, Data> mapToItem = (line) -> {
 		String[] p = line.split(COMMA);// a CSV has comma separated lines
-//		System.out.println(Arrays.asList(p));
+		System.out.println(Arrays.asList(p));
 //		if(p.length > 17){
 //			System.out.println(line);
 //		}
