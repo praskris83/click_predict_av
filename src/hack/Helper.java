@@ -169,7 +169,7 @@ public class Helper {
 			Matcher matcher = pattern.matcher(value);
 			if (matcher.find()) {
 				String url = matcher.group();
-				System.out.println("URL = " + url);
+//				System.out.println("URL = " + url);
 				return url.toLowerCase().trim().hashCode();
 			}
 		}

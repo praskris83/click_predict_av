@@ -58,31 +58,31 @@ public class InstanceHelper {
 
 		try {
 			// 203.88.6.38
-			// for (int i = 200; i <= 633; i++) {
-			// String filename =
-			// "E:\\Prasad\\hackathon\\Click_Predictions\\train\\train.csv";
-			String filename = "/tmp/cltrain/train.csv";
-			// if (("" + i).length() == 1) {
-			// filename = filename + "00" + i + ".csv";
-			// } else if (("" + i).length() == 2) {
-			// filename = filename + "0" + i + ".csv";
-			// } else {
-			// filename = filename + i + ".csv";
-			// }
-			System.out.println("Train File --" + filename);
-			// LineIterator it = FileUtils.lineIterator(new File(filename),
-			// "UTF-8");
-			List<Data> datas = FileHelper.processInputFile(filename);
-			// CSVReader reader = new CSVReader(new FileReader(filename));
-			// CSVReader reader = new CSVReader(new
-			// FileReader("train-628.csv"));
-			try {
-				buildTrainEntry(allCountryCodes, data, datas);
-			} catch (Exception e) {
-				e.printStackTrace();
+			for (int i = 300; i <= 633; i++) {
+				// String filename =
+				// "E:\\Prasad\\hackathon\\Click_Predictions\\train\\train.csv";
+				String filename = "/tmp/cltrain/train-";
+				if (("" + i).length() == 1) {
+					filename = filename + "00" + i + ".csv";
+				} else if (("" + i).length() == 2) {
+					filename = filename + "0" + i + ".csv";
+				} else {
+					filename = filename + i + ".csv";
+				}
+				System.out.println("Train File --" + filename);
+				// LineIterator it = FileUtils.lineIterator(new File(filename),
+				// "UTF-8");
+				List<Data> datas = FileHelper.processInputFile(filename);
+				// CSVReader reader = new CSVReader(new FileReader(filename));
+				// CSVReader reader = new CSVReader(new
+				// FileReader("train-628.csv"));
+				try {
+					buildTrainEntry(allCountryCodes, data, datas);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				// StringToWordVector filter = new StringToWordVector();
 			}
-			// StringToWordVector filter = new StringToWordVector();
-			// }
 			// System.out.println(data);
 			// Create a naïve bayes classifier
 
@@ -176,7 +176,7 @@ public class InstanceHelper {
 				// values.setValue(15, "");
 				// values.setValue(16, "");
 				data.add(values);
-//				break;
+				// break;
 			} catch (Exception e) {
 				e.printStackTrace();
 				values.setValue(15, "FALSE");

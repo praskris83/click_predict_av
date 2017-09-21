@@ -26,7 +26,7 @@
 					<arguments>
 						<argument>-Xms25g</argument>
 						<argument>-Xmx25g</argument>
-						<argument>-XX:NewRatio=1</argument>
+						<argument>-XX:MaxNewSize=5g</argument>
 						<argument>-XX:+PrintGCTimeStamps</argument>
 						<argument>-XX:+UseParallelGC</argument>
 						<argument>-Xloggc:gc.log</argument>
