@@ -22,6 +22,33 @@ public class Data {
 	
 	String add;
 	String frd;
+	double clas;
+	double cost;
 	
+	
+	public double getCost() {
+		return cost;
+	}
+
+
+	public void setCost(double cost) {
+		this.cost = cost;
+	}
+
+
+	public double getClas() {
+		return clas;
+	}
+
+
+	public void setClas(double classification) {
+		this.clas = classification;
+	}
+
+
+	@Override
+	public String toString() {
+		return id + "\t" + clas + "\t" + cost + "\n";
+	}
 	
 }

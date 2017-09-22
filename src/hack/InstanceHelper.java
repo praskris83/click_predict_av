@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.opencsv.CSVReader;
 
 import weka.classifiers.Classifier;
+import weka.classifiers.bayes.NaiveBayesUpdateable;
 import weka.classifiers.functions.Logistic;
 import weka.core.Attribute;
 import weka.core.DenseInstance;
@@ -26,7 +27,7 @@ import weka.core.SerializationHelper;
  */
 public class InstanceHelper {
 
-	public static final String country = "DE";
+	public static final String country = "IN";
 	static Map<Long, Long> userVisitMap = new HashMap<Long, Long>();
 
 	public static void main(String[] args) {
@@ -58,10 +59,10 @@ public class InstanceHelper {
 
 		try {
 			// 203.88.6.38
-			for (int i = 300; i <= 633; i++) {
-				// String filename =
-				// "E:\\Prasad\\hackathon\\Click_Predictions\\train\\train.csv";
-				String filename = "/tmp/cltrain/train-";
+			for (int i = 300; i <= 300; i++) {
+				 String filename =
+				 "E:\\Prasad\\hackathon\\Click_Predictions\\train\\train-";
+//				String filename = "/tmp/cltrain/train-";
 				if (("" + i).length() == 1) {
 					filename = filename + "00" + i + ".csv";
 				} else if (("" + i).length() == 2) {
@@ -87,6 +88,7 @@ public class InstanceHelper {
 			// Create a naïve bayes classifier
 
 			Classifier cModel = (Classifier) new Logistic();
+			new NaiveBayesUpdateable();
 			try {
 				System.out.println("Starting trained model to click_predict_" + country + ".model");
 				cModel.buildClassifier(data);
@@ -194,7 +196,7 @@ public class InstanceHelper {
 		System.out.println();
 	}
 
-	private static void setOsAttrs(String Os, Instance values) {
+	static void setOsAttrs(String Os, Instance values) {
 		// atts.add(new Attribute("Android_OS", false));
 		// atts.add(new Attribute("Ios_OS", false));
 		// atts.add(new Attribute("Mac_OS", false));
@@ -217,7 +219,7 @@ public class InstanceHelper {
 		}
 	}
 
-	private static void setBrowserAttrs(String browser, Instance values) {
+	static void setBrowserAttrs(String browser, Instance values) {
 		// atts.add(new Attribute("46.0.2490.76_Browser", false));
 		// atts.add(new Attribute("android_webkit_Browser", false));
 		// atts.add(new Attribute("chrome_Browser", false));
@@ -239,7 +241,7 @@ public class InstanceHelper {
 		}
 	}
 
-	private static void setDeviceAttrs(String device, Instance values) {
+	static void setDeviceAttrs(String device, Instance values) {
 		// atts.add(new Attribute("Generic_device", false));
 		// atts.add(new Attribute("Samsung_device", false));
 		// atts.add(new Attribute("Apple_device", false));
@@ -271,7 +273,7 @@ public class InstanceHelper {
 		values.setValueSparse(index++, n);
 	}
 
-	private static void addNewAttrs(ArrayList<Attribute> atts) {
+	public static void addNewAttrs(ArrayList<Attribute> atts) {
 		atts.add(new Attribute("Generic_device", false));
 		atts.add(new Attribute("Samsung_device", false));
 		atts.add(new Attribute("Apple_device", false));

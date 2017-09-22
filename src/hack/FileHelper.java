@@ -82,7 +82,7 @@ public class FileHelper {
 		item.sub = "" + p[p.length - 3].toLowerCase().trim();
 		item.add = "" + p[p.length - 2].toLowerCase().trim();
 		item.frd = "" + p[p.length - 1].toLowerCase().trim();
-
+//		System.out.println(item.id);
 		return item;
 	};
 

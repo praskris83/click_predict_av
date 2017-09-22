@@ -24,10 +24,11 @@ import weka.core.SerializationHelper;
  */
 public class Test {
 
-	public static final String country = "IN";
+	public static final String country = "ID";
 
 	static Map<Long, Long> userVisitMap = new HashMap<Long, Long>();
-	
+	static List<Data> reader = new ArrayList<Data>();
+
 	public static void main(String[] args) {
 
 		try {
@@ -38,20 +39,33 @@ public class Test {
 			 */
 			Attribute testAttribute = testDataSet.attribute(15);
 			testDataSet.setClass(testAttribute);
+			// testDataSet.
+			// testDataSet.
+			// testDataSet.deleteStringAttributes();
+			// Remove remove = new Remove();
+			// remove.setAttributeIndicesArray(new int[]{34});
+			// remove.setInvertSelection(false);
+			// remove.setInputFormat(testDataSet);
+			//
+			// Instances filtered = Filter.useFilter(data, remove);
 			/*
 			 * Now we read in the serialized model from disk
 			 */
 
-			Classifier classifier = (Classifier) SerializationHelper.read("click_predict_"
-					+country+ ".model");
-
+			Classifier classifier = (Classifier) SerializationHelper.read("click_predict_" + country + ".model");
+			Classifier classifier1 = (Classifier) SerializationHelper.read("click_predict_" + "True" + ".model");
 			Enumeration testInstances = testDataSet.enumerateInstances();
+			int i = 0;
 			while (testInstances.hasMoreElements()) {
 				Instance instance = (Instance) testInstances.nextElement();
 				double classification = classifier.classifyInstance(instance);
-				System.out.println(instance.stringValue(15) + "," +classification);
+				double classification1 = classifier1.classifyInstance(instance);
+				// System.out.println(classification1);
+				reader.get(i).setClas(classification);
+				reader.get(i).setCost(classification1);
+				i++;
 			}
-
+			System.out.println(reader);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -65,15 +79,19 @@ public class Test {
 		List<String> allCountryCodes = Helper.getAllCodes();
 
 		buildAttrs(atts, allCountryCodes);
-//		addNewAttrs(atts);
+		addNewAttrs(atts);
+		// atts.add(new Attribute("ID", true));
+		// AddID addId = new AddID();
+		// atts.add(addId);
+
 		Instances data = new Instances("Clicks_Test", atts, 10);
 		data.setClassIndex(15);
 
 		try {
-			for (int i = 623; i <= 633; i++) {
+			for (int i = 0; i <= 255; i++) {
 				// String filename =
-				// "E:\\Prasad\\hackathon\\Click_Predictions\\train\\train-";
-				String filename = "/tmp/cltrain/test-";
+				// "E:\\Prasad\\hackathon\\Click_Predictions\\test\\test-";
+				String filename = "/tmp/cltest/test-";
 				if (("" + i).length() == 1) {
 					filename = filename + "00" + i + ".csv";
 				} else if (("" + i).length() == 2) {
@@ -85,7 +103,7 @@ public class Test {
 				// CSVReader reader = new CSVReader(new FileReader(filename));
 				// LineIterator reader = FileUtils.lineIterator(new
 				// File(filename), "UTF-8");
-				List<Data> reader = FileHelper.processInputFile(filename,country);
+				reader = FileHelper.processInputFile(filename, country);
 				// 203.88.6.38
 				try {
 					buildTrainEntry(allCountryCodes, data, reader);
@@ -102,12 +120,34 @@ public class Test {
 		return data;
 	}
 
+	private static void addNewAttrs(ArrayList<Attribute> atts) {
+		atts.add(new Attribute("Generic_device", false));
+		atts.add(new Attribute("Samsung_device", false));
+		atts.add(new Attribute("Apple_device", false));
+		atts.add(new Attribute("Symphony_device", false));
+		atts.add(new Attribute("Sony_device", false));
+		atts.add(new Attribute("other_device", false));
+		atts.add(new Attribute("46.0.2490.76_Browser", false));
+		atts.add(new Attribute("android_webkit_Browser", false));
+		atts.add(new Attribute("chrome_Browser", false));
+		atts.add(new Attribute("opera_Browser", false));
+		atts.add(new Attribute("iphone_Browser", false));
+		atts.add(new Attribute("Other_Browser", false));
+		atts.add(new Attribute("Android_OS", false));
+		atts.add(new Attribute("Ios_OS", false));
+		atts.add(new Attribute("Mac_OS", false));
+		atts.add(new Attribute("Windows_OS", false));
+		atts.add(new Attribute("Fire_OS", false));
+		atts.add(new Attribute("Other_OS", false));
+
+	}
+
 	protected static void buildTrainEntry(List<String> allCountryCodes, Instances data, List<Data> datas)
 			throws IOException, ParseException {
 		// String header = datas.next();
 		// while (datas.hasNext()) {
 		for (Data line : datas) {
-			Instance values = new DenseInstance(17);
+			Instance values = new DenseInstance(34);
 			try {
 				// String[] lineData = datas.next().split(",");
 				// System.out.println(Arrays.asList(lineData));
@@ -128,11 +168,11 @@ public class Test {
 				values.setValue(3, clkdate);
 				values.setValue(4, Helper.getTimeStr1(line.clickDate));
 				values.setValue(5, Helper.getHashFromStr(line.device));
-//				setDeviceAttrs(line.device, values);
+				setDeviceAttrs(line.device, values);
 				values.setValue(6, Helper.getHashFromStr(line.browser));
-//				setBrowserAttrs(line.browser, values);
+				setBrowserAttrs(line.browser, values);
 				values.setValue(7, Helper.getHashFromStr(line.os));
-//				setOsAttrs(line.os, values);
+				setOsAttrs(line.os, values);
 				values.setValue(8, Helper.getHashFromURL(line.reffer));
 				long usrIPStr = Helper.getUsrIPStr(line.ip);
 				if (userVisitMap.containsKey(usrIPStr)) {
@@ -148,7 +188,8 @@ public class Test {
 				values.setValue(12, Helper.getNumberFromStr(line.sub));
 				values.setValue(13, Helper.getNumberFromStr(line.add));
 				values.setValue(14, Double.valueOf(line.frd));
-				values.setValue(15, Long.parseLong(line.id));
+				// values.setValue(15, Long.parseLong(line.id));
+				// values.setValue(34, Long.parseLong(line.id));
 				// values.setValue(15, "TRUE");
 				// values.setDataset(data);
 				// values.setValue(15, "");
@@ -194,9 +235,86 @@ public class Test {
 		atts.add(new Attribute("advertiserCampaignId", false));
 
 		atts.add(new Attribute("Fraud", false));
-		
-		atts.add(new Attribute("id", false));
 
 		atts.add(new Attribute("Conversion", Arrays.asList(new String[] { "false", "true" })));
+
 	}
+
+	private static void setOsAttrs(String Os, Instance values) {
+		// atts.add(new Attribute("Android_OS", false));
+		// atts.add(new Attribute("Ios_OS", false));
+		// atts.add(new Attribute("Mac_OS", false));
+		// atts.add(new Attribute("Windows_OS", false));
+		// atts.add(new Attribute("Fire_OS", false));
+		// atts.add(new Attribute("Other_OS", false));
+
+		if (StringUtils.containsIgnoreCase(Os, "android")) {
+			setDeviceValues(1, 0, 0, 0, 0, 0, 28, values);
+		} else if (StringUtils.containsIgnoreCase(Os, "ios")) {
+			setDeviceValues(0, 1, 0, 0, 0, 0, 28, values);
+		} else if (StringUtils.containsIgnoreCase(Os, "Mac")) {
+			setDeviceValues(0, 0, 1, 0, 0, 0, 28, values);
+		} else if (StringUtils.containsIgnoreCase(Os, "Window")) {
+			setDeviceValues(0, 0, 0, 1, 0, 0, 28, values);
+		} else if (StringUtils.containsIgnoreCase(Os, "fire")) {
+			setDeviceValues(0, 0, 0, 0, 1, 0, 28, values);
+		} else {
+			setDeviceValues(0, 0, 0, 0, 0, 1, 28, values);
+		}
+	}
+
+	private static void setBrowserAttrs(String browser, Instance values) {
+		// atts.add(new Attribute("46.0.2490.76_Browser", false));
+		// atts.add(new Attribute("android_webkit_Browser", false));
+		// atts.add(new Attribute("chrome_Browser", false));
+		// atts.add(new Attribute("opera_Browser", false));
+		// atts.add(new Attribute("iphone_Browser", false));
+		// atts.add(new Attribute("Other_Browser", false));
+		if (StringUtils.containsIgnoreCase(browser, "46.0.2490.76")) {
+			setDeviceValues(1, 0, 0, 0, 0, 0, 22, values);
+		} else if (StringUtils.containsIgnoreCase(browser, "android")) {
+			setDeviceValues(0, 1, 0, 0, 0, 0, 22, values);
+		} else if (StringUtils.containsIgnoreCase(browser, "chrom")) {
+			setDeviceValues(0, 0, 1, 0, 0, 0, 22, values);
+		} else if (StringUtils.containsIgnoreCase(browser, "opera")) {
+			setDeviceValues(0, 0, 0, 1, 0, 0, 22, values);
+		} else if (StringUtils.containsIgnoreCase(browser, "iphone")) {
+			setDeviceValues(0, 0, 0, 0, 1, 0, 22, values);
+		} else {
+			setDeviceValues(0, 0, 0, 0, 0, 1, 22, values);
+		}
+	}
+
+	private static void setDeviceAttrs(String device, Instance values) {
+		// atts.add(new Attribute("Generic_device", false));
+		// atts.add(new Attribute("Samsung_device", false));
+		// atts.add(new Attribute("Apple_device", false));
+		// atts.add(new Attribute("Symphony_device", false));
+		// atts.add(new Attribute("Sony_device", false));
+		// atts.add(new Attribute("other_device", false));
+
+		if (StringUtils.containsIgnoreCase(device, "generic")) {
+			setDeviceValues(1, 0, 0, 0, 0, 0, 16, values);
+		} else if (StringUtils.containsIgnoreCase(device, "samsung")) {
+			setDeviceValues(0, 1, 0, 0, 0, 0, 16, values);
+		} else if (StringUtils.containsIgnoreCase(device, "apple")) {
+			setDeviceValues(0, 0, 1, 0, 0, 0, 16, values);
+		} else if (StringUtils.containsIgnoreCase(device, "symphony")) {
+			setDeviceValues(0, 0, 0, 1, 0, 0, 16, values);
+		} else if (StringUtils.containsIgnoreCase(device, "sony")) {
+			setDeviceValues(0, 0, 0, 0, 1, 0, 16, values);
+		} else {
+			setDeviceValues(1, 0, 0, 0, 0, 1, 16, values);
+		}
+	}
+
+	private static void setDeviceValues(int i, int j, int k, int l, int m, int n, int index, Instance values) {
+		values.setValueSparse(index++, i);
+		values.setValueSparse(index++, j);
+		values.setValueSparse(index++, k);
+		values.setValueSparse(index++, l);
+		values.setValueSparse(index++, m);
+		values.setValueSparse(index++, n);
+	}
+
 }

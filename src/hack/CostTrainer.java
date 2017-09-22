@@ -41,14 +41,14 @@ public class CostTrainer {
 
 		buildAttrs(atts, allCountryCodes);
 
-		// addNewAttrs(atts);
+		InstanceHelper.addNewAttrs(atts);
 
 		Instances data = new Instances("Cost_Train", atts, 10);
 		data.setClassIndex(15);
 
 		try {
 			// 203.88.6.38
-			for (int i = 0; i <= 633; i++) {
+			for (int i = 0; i <= 255; i++) {
 //				 String filename =
 //				 "E:\\Prasad\\hackathon\\Click_Predictions\\train\\train-";
 				String filename = "/tmp/cltrain/train-";
@@ -120,7 +120,7 @@ public class CostTrainer {
 		// String header = datas.next();
 		// while (datas.hasNext()) {
 		for (Data line : datas) {
-			Instance values = new DenseInstance(16);
+			Instance values = new DenseInstance(34);
 			try {
 				// String[] lineData = datas.next().split(",");
 				// System.out.println(Arrays.asList(lineData));
@@ -141,11 +141,11 @@ public class CostTrainer {
 				values.setValue(3, clkdate);
 				values.setValue(4, Helper.getTimeStr1(line.clickDate));
 				values.setValue(5, Helper.getHashFromStr(line.device));
-				// setDeviceAttrs(line.device, values);
+				InstanceHelper.setDeviceAttrs(line.device, values);
 				values.setValue(6, Helper.getHashFromStr(line.browser));
-				// setBrowserAttrs(line.browser, values);
+				InstanceHelper.setBrowserAttrs(line.browser, values);
 				values.setValue(7, Helper.getHashFromStr(line.os));
-				// setOsAttrs(line.os, values);
+				InstanceHelper.setOsAttrs(line.os, values);
 				values.setValue(8, Helper.getHashFromURL(line.reffer));
 				long usrIPStr = Helper.getUsrIPStr(line.ip);
 				if (userVisitMap.containsKey(usrIPStr)) {
