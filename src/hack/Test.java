@@ -85,7 +85,7 @@ public class Test {
 				// CSVReader reader = new CSVReader(new FileReader(filename));
 				// LineIterator reader = FileUtils.lineIterator(new
 				// File(filename), "UTF-8");
-				List<Data> reader = FileHelper.processInputFile(filename);
+				List<Data> reader = FileHelper.processInputFile(filename,country);
 				// 203.88.6.38
 				try {
 					buildTrainEntry(allCountryCodes, data, reader);

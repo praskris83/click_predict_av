@@ -59,7 +59,7 @@ public class FileHelper {
 
 	private static Function<String, Data> mapToItem = (line) -> {
 		String[] p = line.split(COMMA);// a CSV has comma separated lines
-		System.out.println(Arrays.asList(p));
+//		System.out.println(Arrays.asList(p));
 		// if(p.length > 17){
 		// System.out.println(line);
 		// }
