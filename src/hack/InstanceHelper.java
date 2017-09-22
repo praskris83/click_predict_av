@@ -13,8 +13,10 @@ import org.apache.commons.lang3.StringUtils;
 import com.opencsv.CSVReader;
 
 import weka.classifiers.Classifier;
+import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.NaiveBayesUpdateable;
 import weka.classifiers.functions.Logistic;
+import weka.classifiers.functions.SimpleLogistic;
 import weka.core.Attribute;
 import weka.core.DenseInstance;
 import weka.core.Instance;
@@ -27,7 +29,7 @@ import weka.core.SerializationHelper;
  */
 public class InstanceHelper {
 
-	public static final String country = "IN";
+	public static final String country = "BD";
 	static Map<Long, Long> userVisitMap = new HashMap<Long, Long>();
 
 	public static void main(String[] args) {
@@ -59,10 +61,10 @@ public class InstanceHelper {
 
 		try {
 			// 203.88.6.38
-			for (int i = 300; i <= 300; i++) {
-				 String filename =
-				 "E:\\Prasad\\hackathon\\Click_Predictions\\train\\train-";
-//				String filename = "/tmp/cltrain/train-";
+			for (int i = 300; i <= 630; i++) {
+//				 String filename =
+//				 "E:\\Prasad\\hackathon\\Click_Predictions\\train\\train-";
+				String filename = "/tmp/cltrain/train-";
 				if (("" + i).length() == 1) {
 					filename = filename + "00" + i + ".csv";
 				} else if (("" + i).length() == 2) {
@@ -84,10 +86,10 @@ public class InstanceHelper {
 				}
 				// StringToWordVector filter = new StringToWordVector();
 			}
-			// System.out.println(data);
+//			 System.out.println(data);
 			// Create a naïve bayes classifier
 
-			Classifier cModel = (Classifier) new Logistic();
+			Classifier cModel = (Classifier) new SimpleLogistic();
 			new NaiveBayesUpdateable();
 			try {
 				System.out.println("Starting trained model to click_predict_" + country + ".model");
@@ -100,21 +102,21 @@ public class InstanceHelper {
 				SerializationHelper.write("click_predict_" + country + ".model", cModel);
 				System.out.println("Saved trained model to click_predict_" + country + ".model");
 
-				// Instances testData = buildTestData();
-				// // Test the model
-				// Evaluation eTest = new Evaluation(testData);
-				// eTest.evaluateModel(cModel, testData);
-				//
-				// // Print the result à la Weka explorer:
-				// String strSummary = eTest.toSummaryString();
-				// System.out.println(strSummary);
-				//
-				// // Get the confusion matrix
-				// double[][] cmMatrix = eTest.confusionMatrix();
-				//
-				// for (double[] row : cmMatrix) {
-				// printRow(row);
-				// }
+				 Instances testData = buildTestData();
+				 // Test the model
+				 Evaluation eTest = new Evaluation(testData);
+				 eTest.evaluateModel(cModel, testData);
+				
+				 // Print the result à la Weka explorer:
+				 String strSummary = eTest.toSummaryString();
+				 System.out.println(strSummary);
+				 System.out.println(eTest.unclassified() + " -- " );
+				 // Get the confusion matrix
+				 double[][] cmMatrix = eTest.confusionMatrix();
+				
+				 for (double[] row : cmMatrix) {
+				 printRow(row);
+				 }
 
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -341,9 +343,9 @@ public class InstanceHelper {
 		data.setClassIndex(15);
 
 		try {
-			for (int i = 623; i <= 633; i++) {
-				// String filename =
-				// "E:\\Prasad\\hackathon\\Click_Predictions\\train\\train-";
+			for (int i = 631; i <= 633; i++) {
+//				 String filename =
+//				 "E:\\Prasad\\hackathon\\Click_Predictions\\train\\train-";
 				String filename = "/tmp/cltrain/train-";
 				if (("" + i).length() == 1) {
 					filename = filename + "00" + i + ".csv";

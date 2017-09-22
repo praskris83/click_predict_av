@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 
 import weka.classifiers.Classifier;
+import weka.classifiers.Evaluation;
 import weka.classifiers.functions.LinearRegression;
 import weka.core.Attribute;
 import weka.core.DenseInstance;
@@ -41,17 +43,16 @@ public class CostTrainer {
 
 		buildAttrs(atts, allCountryCodes);
 
-		InstanceHelper.addNewAttrs(atts);
+		// InstanceHelper.addNewAttrs(atts);
 
 		Instances data = new Instances("Cost_Train", atts, 10);
 		data.setClassIndex(15);
 
 		try {
 			// 203.88.6.38
-			for (int i = 0; i <= 255; i++) {
-//				 String filename =
-//				 "E:\\Prasad\\hackathon\\Click_Predictions\\train\\train-";
-				String filename = "/tmp/cltrain/train-";
+			for (int i = 600; i <= 632; i++) {
+				String filename = "E:\\Prasad\\hackathon\\Click_Predictions\\train\\train-";
+				// String filename = "/tmp/cltrain/train-";
 				if (("" + i).length() == 1) {
 					filename = filename + "00" + i + ".csv";
 				} else if (("" + i).length() == 2) {
@@ -62,7 +63,7 @@ public class CostTrainer {
 				System.out.println("Train File --" + filename);
 				// LineIterator it = FileUtils.lineIterator(new File(filename),
 				// "UTF-8");
-				List<Data> datas = FileHelper.processInputFile(filename,country);
+				List<Data> datas = FileHelper.processInputFile(filename, country);
 				// CSVReader reader = new CSVReader(new FileReader(filename));
 				// CSVReader reader = new CSVReader(new
 				// FileReader("train-628.csv"));
@@ -73,7 +74,7 @@ public class CostTrainer {
 				}
 				// StringToWordVector filter = new StringToWordVector();
 			}
-//			 System.out.println(data);
+			 System.out.println(data);
 			// Create a naïve bayes classifier
 
 			Classifier cModel = (Classifier) new LinearRegression();
@@ -88,21 +89,32 @@ public class CostTrainer {
 				SerializationHelper.write("click_predict_" + country + ".model", cModel);
 				System.out.println("Saved trained model to click_predict_" + country + ".model");
 
-				// Instances testData = buildTestData();
-				// // Test the model
-				// Evaluation eTest = new Evaluation(testData);
-				// eTest.evaluateModel(cModel, testData);
-				//
-				// // Print the result à la Weka explorer:
-				// String strSummary = eTest.toSummaryString();
-				// System.out.println(strSummary);
-				//
-				// // Get the confusion matrix
-				// double[][] cmMatrix = eTest.confusionMatrix();
-				//
-				// for (double[] row : cmMatrix) {
-				// printRow(row);
-				// }
+				Instances testData = buildTestData();
+				// Test the model
+//				Evaluation eTest = new Evaluation(testData);
+//				eTest.evaluateModel(cModel, testData);
+				Classifier classifier = (Classifier) SerializationHelper.read("click_predict_" + country + ".model");
+				Enumeration testInstances = testData.enumerateInstances();
+				// Print the result à la Weka explorer:
+//				String strSummary = eTest.toSummaryString();
+//				System.out.println(strSummary);
+
+				while (testInstances.hasMoreElements()) {
+					Instance instance = (Instance) testInstances.nextElement();
+					double classification = classifier.classifyInstance(instance);
+//					double classification1 = classifier1.classifyInstance(instance);
+					System.out.println(classification);
+//					reader.get(i).setClas(classification);
+//					reader.get(i).setCost(classification1);
+//					i++;
+				}
+				
+				// Get the confusion matrix
+//				double[][] cmMatrix = eTest.confusionMatrix();
+
+//				for (double[] row : cmMatrix) {
+//					InstanceHelper.printRow(row);
+//				}
 
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -120,7 +132,7 @@ public class CostTrainer {
 		// String header = datas.next();
 		// while (datas.hasNext()) {
 		for (Data line : datas) {
-			Instance values = new DenseInstance(34);
+			Instance values = new DenseInstance(16);// 34,16
 			try {
 				// String[] lineData = datas.next().split(",");
 				// System.out.println(Arrays.asList(lineData));
@@ -141,11 +153,11 @@ public class CostTrainer {
 				values.setValue(3, clkdate);
 				values.setValue(4, Helper.getTimeStr1(line.clickDate));
 				values.setValue(5, Helper.getHashFromStr(line.device));
-				InstanceHelper.setDeviceAttrs(line.device, values);
+				// InstanceHelper.setDeviceAttrs(line.device, values);
 				values.setValue(6, Helper.getHashFromStr(line.browser));
-				InstanceHelper.setBrowserAttrs(line.browser, values);
+				// InstanceHelper.setBrowserAttrs(line.browser, values);
 				values.setValue(7, Helper.getHashFromStr(line.os));
-				InstanceHelper.setOsAttrs(line.os, values);
+				// InstanceHelper.setOsAttrs(line.os, values);
 				values.setValue(8, Helper.getHashFromURL(line.reffer));
 				long usrIPStr = Helper.getUsrIPStr(line.ip);
 				if (userVisitMap.containsKey(usrIPStr)) {
@@ -167,7 +179,7 @@ public class CostTrainer {
 				// values.setValue(15, "");
 				// values.setValue(16, "");
 				data.add(values);
-//				break;
+				// break;
 			} catch (Exception e) {
 				e.printStackTrace();
 				values.setValue(15, 0d);
@@ -175,6 +187,53 @@ public class CostTrainer {
 				continue;
 			}
 		}
+	}
+
+	public static Instances buildTestData() {
+		ArrayList<Attribute> atts = new ArrayList<Attribute>();
+
+		// Country Codes
+		List<String> allCountryCodes = Helper.getAllCodes();
+
+		buildAttrs(atts, allCountryCodes);
+		// addNewAttrs(atts);
+		// atts.add(new Attribute("ID", true));
+		// AddID addId = new AddID();
+		// atts.add(addId);
+
+		Instances data = new Instances("Clicks_Test", atts, 10);
+		data.setClassIndex(15);
+
+		try {
+			for (int i = 633; i <= 633; i++) {
+				String filename = "E:\\Prasad\\hackathon\\Click_Predictions\\train\\train-";
+				// String filename = "/tmp/cltest/test-";
+				if (("" + i).length() == 1) {
+					filename = filename + "00" + i + ".csv";
+				} else if (("" + i).length() == 2) {
+					filename = filename + "0" + i + ".csv";
+				} else {
+					filename = filename + i + ".csv";
+				}
+				System.out.println("Test Files " + filename);
+				// CSVReader reader = new CSVReader(new FileReader(filename));
+				// LineIterator reader = FileUtils.lineIterator(new
+				// File(filename), "UTF-8");
+				List<Data> reader = FileHelper.processInputFile(filename, country);
+				// 203.88.6.38
+				try {
+					buildTrainEntry(allCountryCodes, data, reader);
+					// dummy(allCountryCodes, data, reader);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return data;
 	}
 
 	protected static void buildAttrs(ArrayList<Attribute> atts, List<String> allCountryCodes) {
