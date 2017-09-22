@@ -13,7 +13,6 @@ import org.apache.commons.lang3.math.NumberUtils;
 
 import weka.classifiers.Classifier;
 import weka.classifiers.functions.LinearRegression;
-import weka.classifiers.functions.Logistic;
 import weka.core.Attribute;
 import weka.core.DenseInstance;
 import weka.core.Instance;
@@ -26,7 +25,7 @@ import weka.core.SerializationHelper;
  */
 public class CostTrainer {
 
-	public static final String country = "TRUE";
+	public static final String country = "True";
 	static Map<Long, Long> userVisitMap = new HashMap<Long, Long>();
 
 	public static void main(String[] args) {
@@ -63,7 +62,7 @@ public class CostTrainer {
 				System.out.println("Train File --" + filename);
 				// LineIterator it = FileUtils.lineIterator(new File(filename),
 				// "UTF-8");
-				List<Data> datas = FileHelper.processInputFile(filename);
+				List<Data> datas = FileHelper.processInputFile(filename,country);
 				// CSVReader reader = new CSVReader(new FileReader(filename));
 				// CSVReader reader = new CSVReader(new
 				// FileReader("train-628.csv"));
@@ -74,7 +73,7 @@ public class CostTrainer {
 				}
 				// StringToWordVector filter = new StringToWordVector();
 			}
-			 System.out.println(data);
+//			 System.out.println(data);
 			// Create a naïve bayes classifier
 
 			Classifier cModel = (Classifier) new LinearRegression();

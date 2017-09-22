@@ -72,7 +72,7 @@ public class InstanceHelper {
 				System.out.println("Train File --" + filename);
 				// LineIterator it = FileUtils.lineIterator(new File(filename),
 				// "UTF-8");
-				List<Data> datas = FileHelper.processInputFile(filename);
+				List<Data> datas = FileHelper.processInputFile(filename,country);
 				// CSVReader reader = new CSVReader(new FileReader(filename));
 				// CSVReader reader = new CSVReader(new
 				// FileReader("train-628.csv"));
@@ -354,7 +354,7 @@ public class InstanceHelper {
 				// CSVReader reader = new CSVReader(new FileReader(filename));
 				// LineIterator reader = FileUtils.lineIterator(new
 				// File(filename), "UTF-8");
-				List<Data> reader = FileHelper.processInputFile(filename);
+				List<Data> reader = FileHelper.processInputFile(filename,country);
 				// 203.88.6.38
 				try {
 					buildTrainEntry(allCountryCodes, data, reader);
