@@ -26,7 +26,7 @@ import weka.core.SerializationHelper;
  */
 public class InstanceHelper {
 
-	public static final String country = "1";
+	public static final String country = "IN";
 	static Map<Long, Long> userVisitMap = new HashMap<Long, Long>();
 
 	public static void main(String[] args) {
@@ -58,7 +58,7 @@ public class InstanceHelper {
 
 		try {
 			// 203.88.6.38
-			for (int i = 0; i <= 100; i++) {
+			for (int i = 400; i <= 633; i++) {
 				// String filename =
 				// "E:\\Prasad\\hackathon\\Click_Predictions\\train\\train.csv";
 				String filename = "/tmp/cltrain/train-";

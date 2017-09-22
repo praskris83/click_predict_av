@@ -48,7 +48,7 @@ public class FileHelper {
 			BufferedReader br = new BufferedReader(new InputStreamReader(inputFS));
 			// skip the header of the csv
 			inputList = br.lines().skip(1).
-//					filter(line->line.contains(InstanceHelper.country+",")).
+					filter(line->line.contains(InstanceHelper.country+",")).
 					map(mapToItem).collect(Collectors.toList());
 			br.close();
 		} catch (Exception e) {
