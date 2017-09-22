@@ -24,7 +24,7 @@ import weka.core.SerializationHelper;
  */
 public class Test {
 
-	public static final String country = "ID";
+	public static final String country = "BD";
 
 	static Map<Long, Long> userVisitMap = new HashMap<Long, Long>();
 	static List<Data> reader = new ArrayList<Data>();
@@ -53,16 +53,16 @@ public class Test {
 			 */
 
 			Classifier classifier = (Classifier) SerializationHelper.read("click_predict_" + country + ".model");
-			Classifier classifier1 = (Classifier) SerializationHelper.read("click_predict_" + "True" + ".model");
+//			Classifier classifier1 = (Classifier) SerializationHelper.read("click_predict_" + "True" + ".model");
 			Enumeration testInstances = testDataSet.enumerateInstances();
 			int i = 0;
 			while (testInstances.hasMoreElements()) {
 				Instance instance = (Instance) testInstances.nextElement();
 				double classification = classifier.classifyInstance(instance);
-				double classification1 = classifier1.classifyInstance(instance);
-				// System.out.println(classification1);
+//				double classification1 = classifier1.classifyInstance(instance);
+				System.out.println(classification);
 				reader.get(i).setClas(classification);
-				reader.get(i).setCost(classification1);
+//				reader.get(i).setCost(classification1);
 				i++;
 			}
 			System.out.println(reader);
@@ -91,7 +91,7 @@ public class Test {
 			for (int i = 0; i <= 255; i++) {
 				// String filename =
 				// "E:\\Prasad\\hackathon\\Click_Predictions\\test\\test-";
-				String filename = "/tmp/cltest/test-";
+				String filename = "/tmp/cltrain/train-";
 				if (("" + i).length() == 1) {
 					filename = filename + "00" + i + ".csv";
 				} else if (("" + i).length() == 2) {
