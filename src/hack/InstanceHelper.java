@@ -135,7 +135,7 @@ public class InstanceHelper {
 				// System.out.println(Arrays.asList(lineData));
 				values.setDataset(data);
 				values.setValue(0, (line.cuntry.isEmpty() || !(allCountryCodes.contains(line.cuntry)) ? "--"
-						: line.cuntry.trim().toLowerCase()));
+						: line.cuntry.trim().toUpperCase()));
 				values.setValue(1, Helper.getNumberFromStr(line.carrier));
 				values.setValue(2, (StringUtils.isNotBlank(line.traffic) ? line.traffic : "g"));
 				// String clickDate = line[4];
@@ -179,7 +179,7 @@ public class InstanceHelper {
 				// break;
 			} catch (Exception e) {
 				e.printStackTrace();
-				values.setValue(15, "FALSE");
+				values.setValue(15, "false");
 				data.add(values);
 				continue;
 			}

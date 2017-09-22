@@ -1,16 +1,17 @@
+/**
+ * 
+ */
 package hack;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -18,28 +19,31 @@ import java.util.stream.Collectors;
  * @author prasad
  *
  */
-public class FileHelper {
+public class TestDataanalyser {
 
+	static Map<String, Long> userVisitMap = new HashMap<String, Long>();
+	
 	private static final String COMMA = ",";
-
-	public static void main(String args[]) {
-
-		String fileName = "c://lines.txt";
-		List<String> list = new ArrayList<>();
-
-		try (BufferedReader br = Files.newBufferedReader(Paths.get(fileName))) {
-
-			// br returns as stream and convert it into a List
-			list = br.lines().collect(Collectors.toList());
-
-		} catch (IOException e) {
-			e.printStackTrace();
+	
+	public static void main(String[] args) {
+		for (int i = 0; i <= 255; i++) {
+			// String filename =
+			// "E:\\Prasad\\hackathon\\Click_Predictions\\train\\train.csv";
+			String filename = "/tmp/cltrain/test-";
+			if (("" + i).length() == 1) {
+				filename = filename + "00" + i + ".csv";
+			} else if (("" + i).length() == 2) {
+				filename = filename + "0" + i + ".csv";
+			} else {
+				filename = filename + i + ".csv";
+			}
+			System.out.println("Train File --" + filename);
+			processInputFile(filename);
 		}
-
-		list.forEach(System.out::println);
-
+		
+		System.out.println(userVisitMap);
 	}
-
+	
 	public static List<Data> processInputFile(String inputFilePath) {
 		List<Data> inputList = new LinkedList<Data>();
 		try {
@@ -65,23 +69,14 @@ public class FileHelper {
 		// more initialization goes here
 		item.id=""+p[0].toLowerCase().trim();
 		item.cuntry=""+p[1].toUpperCase().trim();
-		item.carrier=""+p[2].toLowerCase().trim();
-		item.traffic=""+p[3].toLowerCase().trim();
-		item.clickDate=""+p[4].toLowerCase().trim();
-		item.device=""+p[5].toLowerCase().trim();
-		item.browser=""+p[6].toLowerCase().trim();
-		item.os=""+p[7].toLowerCase().trim();
-		item.reffer=""+p[8].toLowerCase().trim();
-		item.ip=""+p[p.length-8].toLowerCase().trim();
-		item.conversion=""+p[p.length-7].toLowerCase().trim();
-		item.cDate=""+p[p.length-6].toLowerCase().trim();
-		item.pay=""+p[p.length-5].toLowerCase().trim();
-		item.pub=""+p[p.length-4].toLowerCase().trim();
-		item.sub=""+p[p.length-3].toLowerCase().trim();
-		item.add=""+p[p.length-2].toLowerCase().trim();
-		item.frd=""+p[p.length-1].toLowerCase().trim();
+		
+		if (userVisitMap.containsKey(item.cuntry)) {
+			Long visitCount = userVisitMap.get(item.cuntry) + 1;
+			userVisitMap.put(item.cuntry, visitCount);
+		} else {
+			userVisitMap.put(item.cuntry, 1l);
+		}
 		
 		return item;
 	};
-
 }
