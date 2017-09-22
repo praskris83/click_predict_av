@@ -15,7 +15,6 @@ import com.opencsv.CSVReader;
 import weka.classifiers.Classifier;
 import weka.classifiers.Evaluation;
 import weka.classifiers.bayes.NaiveBayesUpdateable;
-import weka.classifiers.functions.Logistic;
 import weka.classifiers.functions.SimpleLogistic;
 import weka.core.Attribute;
 import weka.core.DenseInstance;

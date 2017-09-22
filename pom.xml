@@ -32,7 +32,7 @@
 						<argument>-Xloggc:gc.log</argument>
 						<argument>-classpath</argument>
 						<classpath />
-						<argument>hack.Test</argument>
+						<argument>hack.InstanceHelper</argument>
 					</arguments>
 				</configuration>
 			</plugin>
