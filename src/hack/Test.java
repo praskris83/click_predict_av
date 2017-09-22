@@ -88,7 +88,7 @@ public class Test {
 		data.setClassIndex(15);
 
 		try {
-			for (int i = 0; i <= 255; i++) {
+			for (int i = 633; i <= 633; i++) {
 				// String filename =
 				// "E:\\Prasad\\hackathon\\Click_Predictions\\test\\test-";
 				String filename = "/tmp/cltrain/train-";
